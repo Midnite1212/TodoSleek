@@ -10,10 +10,27 @@ namespace TodoSleek.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = String.Empty;
         [BsonElement("title")]
-        public string Title { get; set; } = String.Empty;
+        public string Title { get; set; } = "New To Do";
         [BsonElement("description")]
         public string Description { get; set; } = String.Empty;
+        [BsonElement("due date")]
+        public DateTime DueDate { get; set; } = DateTime.Now;
+        [BsonElement("status")]
+        public TodoStatus Status { get; set; } = TodoStatus.NOT_STARTED;
+        [BsonElement("priority")]
+        public bool Priority { get; set; } = false;
+        [BsonElement("order")]
+        public int Order { get; set; }
+        [BsonElement("subtasks")]
+        public string[]? Subtasks { get; set; }
         [BsonElement("tags")]
         public string[]? Tags { get; set; }
+    }
+
+    public enum TodoStatus
+    {
+        COMPLETED,
+        IN_PROGRESS,
+        NOT_STARTED
     }
 }
