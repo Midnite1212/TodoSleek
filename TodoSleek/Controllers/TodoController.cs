@@ -39,7 +39,7 @@ namespace TodoSleek.Controllers
 
         // POST api/Todo
         [HttpPost]
-        public ActionResult<TodoItem> Post([FromHeader] TodoItem todoItem)
+        public ActionResult<TodoItem> Post([FromBody] TodoItem todoItem)
         {
             todoService.Create(todoItem);
 
@@ -48,7 +48,7 @@ namespace TodoSleek.Controllers
 
         // PUT api/Todo/id
         [HttpPut("{id}")]
-        public ActionResult Put(string id, [FromHeader] TodoItem todoItem)
+        public ActionResult Put(string id, [FromBody] TodoItem todoItem)
         {
             var existingTodoItem = todoService.Get(id);
 

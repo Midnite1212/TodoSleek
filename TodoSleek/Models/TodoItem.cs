@@ -10,7 +10,7 @@ namespace TodoSleek.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = String.Empty;
         [BsonElement("title")]
-        public string Title { get; set; } = "New To Do";
+        public string Title { get; set; } = "New Task";
         [BsonElement("description")]
         public string Description { get; set; } = String.Empty;
         [BsonElement("due date")]
@@ -22,9 +22,9 @@ namespace TodoSleek.Models
         [BsonElement("order")]
         public int Order { get; set; }
         [BsonElement("subtasks")]
-        public string[]? Subtasks { get; set; }
+        public Subtasks[]? Subtasks { get; set; }
         [BsonElement("tags")]
-        public string[]? Tags { get; set; }
+        public Tags[]? Tags { get; set; }
     }
 
     public enum TodoStatus

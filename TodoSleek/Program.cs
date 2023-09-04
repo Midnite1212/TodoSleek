@@ -10,8 +10,8 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
                 policy =>
                 {
-                    policy.WithOrigins("https://localhost:44485")
-                            .WithMethods("PUT", "DELETE", "GET", "POST");
+                    policy.WithOrigins("https://localhost:44485");
+                    policy.AllowAnyHeader().AllowAnyMethod();
                 });
 });
 

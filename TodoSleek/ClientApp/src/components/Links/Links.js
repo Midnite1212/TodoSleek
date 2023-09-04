@@ -1,11 +1,11 @@
 import react from "react";
 
-const Notes = () => {
+const Links = () => {
   return (
     <>
-      <p>Notes</p>
+      <p>Links</p>
     </>
   );
 };
 
-export default Notes;
+export default Links;
