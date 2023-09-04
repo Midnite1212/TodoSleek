@@ -7,9 +7,10 @@ namespace TodoSleek.Services
     {
         private readonly IMongoCollection<TodoItem> _todoItem;
 
-        public TodoService(ITodoStoreDatabaseSettings settings, IMongoClient mongoClient)
+        public TodoService(ITodoStoreDatabaseSettings settings)
         {
-            var database = mongoClient.GetDatabase(settings.DatabaseName);
+            MongoClient client = new MongoClient(settings.ConnectionString);
+            IMongoDatabase database = client.GetDatabase(settings.DatabaseName);
             _todoItem = database.GetCollection<TodoItem>(settings.TodoItemCollectionName);
         }
 

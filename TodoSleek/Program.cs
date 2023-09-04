@@ -5,6 +5,16 @@ using TodoSleek.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                policy =>
+                {
+                    policy.WithOrigins("https://localhost:44485")
+                            .WithMethods("PUT", "DELETE", "GET", "POST");
+                });
+});
+
 // Add services to the container.
 
 builder.Services.Configure<TodoStoreDatabaseSettings>(
@@ -29,6 +39,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

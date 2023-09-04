@@ -18,7 +18,7 @@ namespace TodoSleek.Controllers
         }
         // GET: api/Todo
         [HttpGet]
-        public ActionResult<List<TodoItem>> Get()
+        public List<TodoItem> Get()
         {
             return todoService.Get();
         }

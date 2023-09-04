@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 
-const HomeMenu = () => {
+const HomeMenu = (props) => {
     return (
         <>
         <p>testing</p>
