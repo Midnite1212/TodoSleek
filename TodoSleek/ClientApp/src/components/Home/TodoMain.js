@@ -39,7 +39,7 @@ const TodoMain = (props) => {
     title: "New Task",
     description: "Describe task...",
     dueDate: new Date(),
-    status: "NOT_STARTED",
+    status: 2,
     tags: [],
   };
   const [formValues, setFormValues] = useState(defaultFormValues);
@@ -51,13 +51,14 @@ const TodoMain = (props) => {
       ...formValues,
       [fieldName]: value,
     });
+    console.log(formValues.title);
   };
 
   const handleSubmit = async () => {
     const { title, description, dueDate, status, tags } = formValues;
     const submittedValues = {
       Title: title,
-      description: description,
+      Description: description,
       DueDate: dueDate,
       Status: status,
       Priority: false,
@@ -65,21 +66,18 @@ const TodoMain = (props) => {
       Subtasks: [],
       Tags: tags,
     };
-    console.log(formValues);
+    console.log(JSON.stringify(submittedValues));
     try {
-      await fetch(`${SERVER}api/Todo`, {
-        method: "POST",
+      await axios.post(`${SERVER}api/Todo`, JSON.stringify(submittedValues), {
         headers: {
-          Accept: "application/json",
-          ContentType: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(submittedValues),
       });
     } catch (e) {
       console.log(e);
     }
     onClose();
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
@@ -138,7 +136,7 @@ const TodoMain = (props) => {
           <ModalHeader>Create a new To Do!</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl>
+            <FormControl isRequired isInvalid={formValues.title === ""}>
               <FormLabel>Title</FormLabel>
               <Input
                 ref={initialRef}
@@ -150,14 +148,19 @@ const TodoMain = (props) => {
               <FormErrorMessage>Title is required.</FormErrorMessage>
             </FormControl>
 
-            <FormControl mt={4}>
+            <FormControl
+              mt={4}
+              isRequired
+              isInvalid={formValues.description === ""}
+            >
               <FormLabel>Description</FormLabel>
-              <Input placeholder="Description" />
-              {formValues.title === "" ? (
-                <FormErrorMessage>Descripiton is required.</FormErrorMessage>
-              ) : (
-                <></>
-              )}
+              <Input
+                placeholder="Description"
+                onChange={handleChange}
+                value={formValues.description}
+                name="description"
+              />
+              <FormErrorMessage>Descripiton is required.</FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4}>
