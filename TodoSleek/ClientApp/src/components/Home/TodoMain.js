@@ -33,7 +33,7 @@ import Links from "../Links/Links";
 import axios from "axios";
 
 const TodoMain = (props) => {
-  const { data, showData, width, height, overviewTitle } = props;
+  const { data, showData, width, height, overviewTitle, setActiveTask } = props;
   const SERVER = process.env.REACT_APP_SERVER;
   const today = new Date(new Date().toDateString());
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,7 +70,6 @@ const TodoMain = (props) => {
       Subtasks: [],
       Tags: tags,
     };
-    console.log(submittedValues);
     try {
       await axios.post(`${SERVER}api/Todo`, JSON.stringify(submittedValues), {
         headers: {
@@ -91,7 +90,7 @@ const TodoMain = (props) => {
 
   return (
     <>
-      <Flex width={width} height={height}>
+      <Flex width={width} height={height} padding="0 20px">
         <Stack direction="column" width="100%" height="100%">
           <Text fontSize="20px" fontWeight={500}>Hi, Tony!</Text>
           <Stack direction="row" display="flex" justifyContent="space-between" alignItems="center">
@@ -121,7 +120,7 @@ const TodoMain = (props) => {
                 </Stack>
                 {showData &&
                   showData.map((item, key) => {
-                    return <TaskCard key={key} {...item} />;
+                    return <TaskCard key={key} setActiveTask={setActiveTask} {...item} />;
                   })}
               </TabPanel>
               <TabPanel>

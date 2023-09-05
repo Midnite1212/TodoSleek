@@ -1,8 +1,16 @@
-import { Button, Divider, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Flex,
+  IconButton,
+  Image,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 const TaskCard = (props) => {
-  console.log(props);
   const {
+    id,
     title,
     description,
     dueDate,
@@ -11,6 +19,7 @@ const TaskCard = (props) => {
     order,
     priority,
     subtasks,
+    setActiveTask,
   } = props;
 
   const imageButtonStyle = {
@@ -38,7 +47,7 @@ const TaskCard = (props) => {
           <Stack direction="row" spacing={4} style={stackStyle}>
             {status === 0 ? (
               <Image
-                onClick=""
+                onClick={() => {}}
                 src={`${process.env.PUBLIC_URL}/Images/check.svg`}
                 cursor="pointer"
               />
@@ -56,21 +65,25 @@ const TaskCard = (props) => {
           <Stack direction="row" spacing={4} style={stackStyle}>
             {priority ? (
               <Image
-                onClick=""
+                onClick={() => {}}
                 src={`${process.env.PUBLIC_URL}/Images/priorityTrue.png`}
                 style={imageButtonStyle}
               />
             ) : (
               <Image
-                onClick=""
+                onClick={() => {}}
                 src={`${process.env.PUBLIC_URL}/Images/priorityFalse.png`}
                 style={imageButtonStyle}
               />
             )}
-            <Image
-              onClick=""
-              src={`${process.env.PUBLIC_URL}/Images/arrow.png`}
-              style={imageButtonStyle}
+            <IconButton
+              onClick={() => setActiveTask(id)}
+              icon={
+                <Image
+                  src={`${process.env.PUBLIC_URL}/Images/arrow.png`}
+                  style={imageButtonStyle}
+                />
+              }
             />
           </Stack>
         </Stack>
@@ -97,7 +110,12 @@ const TaskCard = (props) => {
             }}
           />
           <Stack direction="row" style={stackStyle}>
-            <Text margin="0px" background="rgba(189,224,254,0.5)" padding="2px 10px 2px 10px" borderRadius="5px">
+            <Text
+              margin="0px"
+              background="rgba(189,224,254,0.5)"
+              padding="2px 10px 2px 10px"
+              borderRadius="5px"
+            >
               {subtasks && subtasks.length ? subtasks.length : 0}
             </Text>
             <Text margin="0px">Subtasks</Text>

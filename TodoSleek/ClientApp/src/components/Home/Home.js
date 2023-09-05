@@ -11,8 +11,10 @@ const Home = () => {
     localStorage.getItem("overview") ? localStorage.getItem("overview") : 1
   );
   const [showData, setShowData] = useState();
+  const [activeTask, setActiveTask] = useState();
   const [overviewTitle, setOverviewTitle] = useState();
   const [overviewNumber, setOverviewNumber] = useState([0, 0, 0, 0]);
+  const [currTask, setCurrTask] = useState();
 
   const SERVER = process.env.REACT_APP_SERVER;
   const today = new Date(new Date().toDateString());
@@ -26,6 +28,11 @@ const Home = () => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const getActiveTask = () => {
+    const curr = todoList.find((item) => item.id === activeTask);
+    setCurrTask(curr);
   };
 
   const sortData = () => {
@@ -51,18 +58,30 @@ const Home = () => {
     switch (parseInt(overview)) {
       case 0:
         setShowData(upcomingDates);
+        upcomingDates.length !== 0
+          ? setActiveTask(upcomingDates[0].id)
+          : setActiveTask("");
         setOverviewTitle("Upcoming");
         break;
       case 1:
         setShowData(todayDates);
+        todayDates.length !== 0
+          ? setActiveTask(todayDates[0].id)
+          : setActiveTask("");
         setOverviewTitle("Today");
         break;
       case 2:
         setShowData(pastDates);
+        pastDates.length !== 0
+          ? setActiveTask(pastDates[0].id)
+          : setActiveTask("");
         setOverviewTitle("Past");
         break;
       case 3:
         setShowData(todoList);
+        todoList.length !== 0
+          ? setActiveTask(todoList[0].id)
+          : setActiveTask("");
         setOverviewTitle("All Todos");
         break;
       default:
@@ -75,6 +94,10 @@ const Home = () => {
     getList();
     sortData();
   }, []);
+
+  useEffect(() => {
+    getActiveTask();
+  }, [activeTask]);
 
   useEffect(() => {
     sortData();
@@ -98,8 +121,14 @@ const Home = () => {
             data={todoList}
             showData={showData}
             overviewTitle={overviewTitle}
+            setActiveTask={setActiveTask}
           />
-          <EditTodo width="35%" height="100%" data={todoList} />
+          <EditTodo
+            width="35%"
+            height="100%"
+            data={todoList}
+            currTask={currTask}
+          />
         </Stack>
       </Flex>
     </>
