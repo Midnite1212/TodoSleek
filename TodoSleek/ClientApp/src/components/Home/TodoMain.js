@@ -20,8 +20,13 @@
   FormLabel,
   Input,
   FormErrorMessage,
+  RadioGroup,
+  HStack,
+  Radio,
 } from "@chakra-ui/react";
-import { useRef, useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useRef, useState } from "react";
 import TaskCard from "../TaskCard/TaskCard";
 import Notes from "../Notes/Notes";
 import Links from "../Links/Links";
@@ -51,7 +56,6 @@ const TodoMain = (props) => {
       ...formValues,
       [fieldName]: value,
     });
-    console.log(formValues.title);
   };
 
   const handleSubmit = async () => {
@@ -60,13 +64,13 @@ const TodoMain = (props) => {
       Title: title,
       Description: description,
       DueDate: dueDate,
-      Status: status,
+      Status: parseInt(status),
       Priority: false,
       Order: data && data.length,
       Subtasks: [],
       Tags: tags,
     };
-    console.log(JSON.stringify(submittedValues));
+    console.log(submittedValues);
     try {
       await axios.post(`${SERVER}api/Todo`, JSON.stringify(submittedValues), {
         headers: {
@@ -80,17 +84,22 @@ const TodoMain = (props) => {
     window.location.reload();
   };
 
+  const handleClose = () => {
+    onClose();
+    setFormValues(defaultFormValues);
+  };
+
   return (
     <>
       <Flex width={width} height={height}>
         <Stack direction="column" width="100%" height="100%">
-          <Text>Hi, Tony!</Text>
-          <Stack direction="row">
-            <Stack direction="row">
-              <Text>{overviewTitle}</Text>
-              <Text>{showData && showData.length}</Text>
+          <Text fontSize="20px" fontWeight={500}>Hi, Tony!</Text>
+          <Stack direction="row" display="flex" justifyContent="space-between" alignItems="center">
+            <Stack direction="row" display="flex" alignItems="center" spacing={8}>
+              <Text fontSize="32px" fontWeight={700}>{overviewTitle}</Text>
+              <Text fontSize="24px" fontWeight={600}>{showData && showData.length}</Text>
             </Stack>
-            <Text>
+            <Text fontSize="24px">
               {today.toLocaleString("default", {
                 month: "long",
                 day: "numeric",
@@ -105,10 +114,10 @@ const TodoMain = (props) => {
               <Tab>Notes</Tab>
               <Tab>Links</Tab>
             </TabList>
-            <TabPanels height="95%" overflowY="auto">
+            <TabPanels height="92%" overflowY="auto">
               <TabPanel>
                 <Stack>
-                  <Button onClick={onOpen}>Open Modal</Button>
+                  <Button onClick={onOpen}>+ Add New Task</Button>
                 </Stack>
                 {showData &&
                   showData.map((item, key) => {
@@ -134,7 +143,7 @@ const TodoMain = (props) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create a new To Do!</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={handleClose} />
           <ModalBody pb={6}>
             <FormControl isRequired isInvalid={formValues.title === ""}>
               <FormLabel>Title</FormLabel>
@@ -165,12 +174,31 @@ const TodoMain = (props) => {
 
             <FormControl mt={4}>
               <FormLabel>Due Date</FormLabel>
-              <Input placeholder="" />
+              <DatePicker
+                selected={formValues.dueDate}
+                showTimeSelect
+                onChange={(date) =>
+                  handleChange({ target: { value: date, name: "dueDate" } })
+                }
+                dateFormat="Pp"
+              />
             </FormControl>
 
             <FormControl mt={4}>
               <FormLabel>Status</FormLabel>
-              <Input placeholder="" />
+              <RadioGroup
+                defaultValue="2"
+                name="Status"
+                onChange={(stat) =>
+                  handleChange({ target: { value: stat, name: "status" } })
+                }
+              >
+                <HStack spacing="24px">
+                  <Radio value="0">Completed</Radio>
+                  <Radio value="1">In Progress</Radio>
+                  <Radio value="2">Not Started</Radio>
+                </HStack>
+              </RadioGroup>
             </FormControl>
 
             <FormControl mt={4}>
@@ -183,7 +211,7 @@ const TodoMain = (props) => {
             <Button onClick={handleSubmit} colorScheme="blue" mr={3}>
               Save
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={handleClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

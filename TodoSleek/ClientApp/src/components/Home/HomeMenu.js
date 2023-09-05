@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 const HomeMenu = (props) => {
-  const { data, width, height, overviewNumber, setOverview } = props;
+  const { data, width, height, overviewNumber, overview, setOverview } = props;
   const [tags, setTags] = useState([]);
 
   const titleTextStyle = {
@@ -37,11 +37,13 @@ const HomeMenu = (props) => {
 
   const getAllTags = () => {
     var allTags = [];
-    data && data.map((item) => {
-      item.tags && item.tags.map((tag) => {
-        allTags.push(tag);
+    data &&
+      data.map((item) => {
+        item.tags &&
+          item.tags.map((tag) => {
+            allTags.push(tag);
+          });
       });
-    });
     allTags = [...new Map(allTags.map((obj) => [obj["title"], obj])).values()];
     setTags([...allTags]);
   };
@@ -49,7 +51,7 @@ const HomeMenu = (props) => {
   useEffect(() => {
     getAllTags();
   }, [data]);
-
+  
   return (
     <>
       <Flex
@@ -66,7 +68,13 @@ const HomeMenu = (props) => {
             </Text>
             <Stack direction="column" marginBottom="5em">
               <Text style={titleTextStyle}>Overview</Text>
-              <Tabs onChange={(index) => setOverview(index)}>
+              <Tabs
+                onChange={(index) => {
+                  setOverview(index);
+                  localStorage.setItem("overview", index);
+                }}
+                defaultIndex={parseInt(overview)}
+              >
                 <TabList flexDirection="column">
                   <Tab>
                     <Stack direction="row" style={menuStackStyle}>

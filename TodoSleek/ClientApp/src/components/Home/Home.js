@@ -7,7 +7,9 @@ import axios from "axios";
 
 const Home = () => {
   const [todoList, setTodoList] = useState([]);
-  const [overview, setOverview] = useState(0);
+  const [overview, setOverview] = useState(
+    localStorage.getItem("overview") ? localStorage.getItem("overview") : 1
+  );
   const [showData, setShowData] = useState();
   const [overviewTitle, setOverviewTitle] = useState();
   const [overviewNumber, setOverviewNumber] = useState([0, 0, 0, 0]);
@@ -32,7 +34,7 @@ const Home = () => {
     var pastDates = [];
 
     todoList.map((item) => {
-      var date = new Date(item.dueDate);
+      var date = new Date(new Date(item.dueDate).toDateString());
       if (today - date < 0) {
         upcomingDates.push(item);
       } else if (today - date === 0) {
@@ -46,7 +48,7 @@ const Home = () => {
       todoList.length,
     ]);
 
-    switch (overview) {
+    switch (parseInt(overview)) {
       case 0:
         setShowData(upcomingDates);
         setOverviewTitle("Upcoming");
@@ -71,7 +73,8 @@ const Home = () => {
 
   useEffect(() => {
     getList();
-  },[]);
+    sortData();
+  }, []);
 
   useEffect(() => {
     sortData();
@@ -86,6 +89,7 @@ const Home = () => {
             height="100%"
             data={todoList}
             overviewNumber={overviewNumber}
+            overview={overview}
             setOverview={setOverview}
           />
           <TodoMain
