@@ -119,8 +119,8 @@ const TodoMain = (props) => {
                   <Button onClick={onOpen}>+ Add New Task</Button>
                 </Stack>
                 {showData &&
-                  showData.map((item, key) => {
-                    return <TaskCard key={key} setActiveTask={setActiveTask} {...item} />;
+                  showData.map((item, i) => {
+                    return <TaskCard key={i} setActiveTask={setActiveTask} {...item} />;
                   })}
               </TabPanel>
               <TabPanel>
